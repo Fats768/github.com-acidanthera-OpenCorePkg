@@ -69,6 +69,17 @@ or that a file does not exist at the specified URI on the server, or that the ce
 (if any) stored in NVRAM could not be used to validate an `https://` URI, or any one of a number
 of other similar problems.
 
+> **Note 5**: During HTTP Boot, an initial error such as 'IP address not found' or 'Network connection timed out'
+without any mention of the NBP _either_ means that no IP address was issued by DHCP, _or_ means
+that the additional NBP (i.e. boot file) info requested over DHCP was not found. Using `dnsmasq` as the DHCP helper
+with the logging options shown below can be helpful to resolve this: any DHCP request which reaches `dnsmasq`
+will show a couple of log lines. If these are not seen during a network boot attempt then there is no chance of
+`dnsmasq` responding, and network connectivity issues need to be resolved. (It is worth noting that in general
+this traffic naturally will pass between local networks.) If these log lines are seen but `dnsmasq` does not
+additionally log that it is responding with NBP information, make sure that it is configured with the correct
+subnetwork for the client machine. It can help to boot the client computer into an OS to confirm which subnetwork
+it is on.
+
 ## Identifying missing network boot drivers
 
 The `dh` command in UEFI Shell (e.g. `OpenShell` provided with
